@@ -20,16 +20,12 @@ st.title('Skin Tone Detection App')
 # Upload image through file uploader
 uploaded_file = st.file_uploader('Upload an image', type=['jpg', 'jpeg', 'png'])
 
-# Display uploaded image
-if uploaded_file is not None:
-    image = np.array(bytearray(uploaded_file.read()), dtype=np.uint8)
-    image = cv2.imdecode(image, 1)
-    
-    # Display the original uploaded image
-    st.image(image, caption='Uploaded Image', use_column_width=True)
-    
-    # Predict button
-    if st.button('Predict Skin Tone'):
+# Button to predict skin tone
+if st.button('Predict Skin Tone'):
+    if uploaded_file is not None:
+        image = np.array(bytearray(uploaded_file.read()), dtype=np.uint8)
+        image = cv2.imdecode(image, 1)
+
         # Detect faces
         try:
             faces = mtcnn.detect_faces(image)
@@ -37,27 +33,23 @@ if uploaded_file is not None:
                 largest_face = max(faces, key=lambda f: f['box'][2] * f['box'][3])
                 x, y, w, h = largest_face['box']
                 detected_face = image[y:y+h, x:x+w]
-                
-                # Display the detected face
-                st.image(detected_face, caption='Detected Face', use_column_width=True)
-                
+
                 # Resize the detected face to the desired input shape
                 detected_face = cv2.resize(detected_face, (120, 90))
-                
+
                 # Preprocess the detected face for classification
                 detected_face = tf.keras.applications.mobilenet_v2.preprocess_input(detected_face[np.newaxis, ...])
-                
+
                 # Predict the class of the face
                 predictions = model.predict(detected_face)
                 predicted_class_idx = np.argmax(predictions)
                 predicted_class = classes[predicted_class_idx]
-                
-                # Display the prediction with a larger font and a message
-                st.write('')
-                st.write('')
-                st.write('')
-                st.write('**Predicted Skin Tone:**')
-                st.write(f'# {predicted_class}')
+
+                # Display the detected face with a fixed width
+                st.image(detected_face, caption='Detected Face', width=200)
+
+                # Display the prediction message
+                st.markdown(f'**Looks like your skin tone is:** {predicted_class}')
             else:
                 st.write('No face detected in the uploaded image.')
         except Exception as e:
