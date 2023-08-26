@@ -15,7 +15,7 @@ classes = ['Fair_Light', 'Medium_Tan', 'Dark_Deep']
 mtcnn = MTCNN()
 
 # Set app title
-st.title('Skin Tone Detection App')
+st.title('ToneSense: Discovering Diversity in Skin Tones through AI')
 
 # Upload image through file uploader
 uploaded_file = st.file_uploader('Upload an image', type=['jpg', 'jpeg', 'png'])
@@ -47,6 +47,10 @@ if uploaded_file is not None:
                 predictions = model.predict(detected_face)
                 predicted_class_idx = np.argmax(predictions)
                 predicted_class = classes[predicted_class_idx]
+                
+                
+                st.image(image, caption='Uploaded Image', use_column_width=True, width=200)
+
                 
                 # Display the prediction with a larger font and a message
                 st.write('')
