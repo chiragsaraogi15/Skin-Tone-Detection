@@ -36,9 +36,11 @@ if st.button('Predict Skin Tone'):
 
                 # Resize the detected face to the desired input shape
                 detected_face = cv2.resize(detected_face, (120, 90))
+                
+                # Normalize pixel values to [0.0, 1.0]
+                detected_face = detected_face / 255.0
 
                 # Preprocess the detected face for classification
-                detected_face = detected_face / 255.0  # Normalize pixel values
                 detected_face = tf.keras.applications.mobilenet_v2.preprocess_input(detected_face[np.newaxis, ...])
 
                 # Predict the class of the face
