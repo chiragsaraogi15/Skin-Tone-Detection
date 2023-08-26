@@ -1,3 +1,8 @@
+import os
+os.environ["OPENCV_VIDEOIO_PRIORITY_MSMF"] = "0"  
+import cv2
+
+
 import streamlit as st
 import cv2
 import tensorflow as tf
