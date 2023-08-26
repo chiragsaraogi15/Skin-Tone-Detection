@@ -49,7 +49,9 @@ if uploaded_file is not None:
                 predicted_class = classes[predicted_class_idx]
                 
                 
-                st.image(image, caption='Uploaded Image', use_column_width=True, width=200)
+                image_original = Image.open(io.BytesIO(uploaded_file.read()))
+                image_original = image_original.resize((150, 150))
+                st.image(image_original, caption='Uploaded Image', use_column_width=True)
 
                 
                 # Display the prediction with a larger font and a message
