@@ -5,6 +5,7 @@ import numpy as np
 from tensorflow.keras.models import load_model
 from mtcnn import MTCNN
 from PIL import Image
+import io
 
 # Load the trained model
 model = load_model('model.h5')  # Replace with your model path
